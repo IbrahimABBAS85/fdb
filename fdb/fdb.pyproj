@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>f58600d6-4d61-4f0c-acc9-31d3470af514</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>tests\test_fdb.py</StartupFile>
+    <StartupFile>tests\test_class_operation.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,10 +22,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="fdb_base.py" />
+    <Compile Include="fdb_manager.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="model_base.py" />
-    <Compile Include="tests\test_fdb.py" />
+    <Compile Include="structure\object_indexer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\testi_class.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\test_class_operation.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="structure\" />
     <Folder Include="tests\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

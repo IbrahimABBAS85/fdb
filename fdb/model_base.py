@@ -1,10 +1,10 @@
-class FDBModel(object):
-    def __init__(self, path):
-        self.__path = path      
-    
-    def addClasse(self, fdbclass):
-        fdbclass.path = self.__path
+from fdb_manager import FDBManager
 
-    def addClasses(self, fdbclassList):
-        for fdbClass in fdbclassList:
-            fdbClass.path = self.__path    
+class FDBModel(object):
+    path = ''
+    manager = None
+
+    @staticmethod
+    def initialize(pathi):
+        FDBModel.path = pathi
+        FDBModel.manager = FDBManager(pathi)
