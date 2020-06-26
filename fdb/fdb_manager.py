@@ -1,7 +1,7 @@
 import os
 
 from pathlib import Path
-
+from mexp.manager import find
 from jpfmanager.jpf import FileManager
 from structure.object_indexer import ObjectIndexer
 
@@ -17,8 +17,11 @@ class FDBManager(object):
             self.getFiles()
         return self.__listObjects
 
-    def addElement(self, fileWithPath, classType):
-        self.__listObjects.append(ObjectIndexer(fileWithPath, classType))
+    def addElement(self, fileWithPath, classType, isLoaded):
+        existedO = find(self.__listObjects, full_path = fileWithPath)
+        if any(existedO):
+            self.removeElement(existedO[0])
+        self.__listObjects.append(ObjectIndexer(fileWithPath, classType, isLoaded))
         self.save()
 
     def save(self):
@@ -36,8 +39,9 @@ class FDBManager(object):
             self.save()
 
     def getFiles(self):
-        if self.__listObjects != None:
-            return self.__listObjects
+        #get file update date....then make a get if date different from last modified date
+        #if self.__listObjects != None:
+        #    return self.__listObjects
         if os.path.exists(self.indexFile):
             fileIndex = FileManager.get(self.indexFile)
             if fileIndex != None and fileIndex != False:

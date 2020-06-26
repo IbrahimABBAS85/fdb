@@ -16,7 +16,28 @@ class Test_Class_Operation(unittest.TestCase):
         testiObj = Testi.get('testi.toto')
         self.assertIsNotNone(testiObj)
         self.assertEqual(type(testiObj), Testi)
-        Testi.delete('testi.toto')
+        resultDelete = Testi.delete('testi.toto')
+        self.assertEqual(resultDelete, True)
+        self.assertEqual(len(FDBModel.manager.listObjects), 0)
+
+    def test_save_two_class_object(self):
+        pathi = str((Path(__file__).parent).absolute())
+        FDBModel.initialize(pathi)
+        testp = Testi(5, 'toto')
+        testp.saveNew('testi.toto')
+        testp = Testi(5, 'lolo')
+        testp.saveNew('testi2.toto')
+        testiObjToto = Testi.get('testi.toto')
+        testiObjLolo = Testi.get('testi2.toto')
+        self.assertIsNotNone(testiObjToto)
+        self.assertEqual(type(testiObjToto), Testi)
+        resultDeleteToto = Testi.delete('testi.toto')
+        self.assertEqual(resultDeleteToto, True)
+        self.assertIsNotNone(testiObjLolo)
+        self.assertEqual(type(testiObjLolo), Testi)
+        resultDeleteLolo = Testi.delete('testi2.toto')
+        self.assertEqual(resultDeleteLolo, True)
+        self.assertEqual(len(FDBModel.manager.listObjects), 0)
 
     def test_get_objects(self):
         pathi = str((Path(__file__).parent).absolute())
@@ -91,16 +112,33 @@ class Test_Class_Operation(unittest.TestCase):
         isDeleted = Testi.deleteAll()
         self.assertEqual(isDeleted, True)
         testiObj = Testi.get('testi1.toto')
-        self.assertIsNone(None)        
+        self.assertIsNone(None)
+
+    def test_find_object_one_argument(self):
+        pathi = str((Path(__file__).parent).absolute())
+        FDBModel.initialize(pathi)
+        testp = Testi(5, 'toto')        
+        testp.saveNew('testi1.toto')
+
+        testiObj = Testi.get('testi1.toto')
+        self.assertIsNotNone(testiObj)
+        
+        tobject = Testi.find(name='toto')
+        self.assertIsNotNone(tobject)
+        self.assertEqual(tobject[0].name, 'toto')
+        isDeleted = Testi.deleteAll()
+        self.assertEqual(isDeleted, True)
 
 def suite():
-    suite = unittest.TestSuite()    
+    suite = unittest.TestSuite()
     suite.addTest(Test_Class_Operation('test_save_class_object'))
+    suite.addTest(Test_Class_Operation('test_save_two_class_object'))
     suite.addTest(Test_Class_Operation('test_get_objects'))
     suite.addTest(Test_Class_Operation('test_delete_object'))
     suite.addTest(Test_Class_Operation('test_delete_all_objects'))
     suite.addTest(Test_Class_Operation('test_count_all_objects'))
     suite.addTest(Test_Class_Operation('test_update_object'))
+    suite.addTest(Test_Class_Operation('test_find_object_one_argument'))
     return suite
 
 
