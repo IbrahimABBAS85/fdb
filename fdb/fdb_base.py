@@ -12,23 +12,35 @@ class FDBase(object):
     __partial_seach_is_used = False
     isInitialized = True
    
-    def saveNew(self, name):
+    def saveNew(self, name = None):
+        if name == None:
+            name =  FDBase.getClassType() + '_' + str(FDBase.count())
         __fileWithPath = os.path.join(FDBModel.path, name)
         if os.path.exists(__fileWithPath):
             raise Exception("The file you want to save exists, please delete it or change its name then save again.")        
         FileManager.save(self, __fileWithPath)
         FDBModel.manager.addElement(__fileWithPath, FDBase.getClassType(), False)
-
-    def update(self):
+    
+    @staticmethod
+    def findObjectPath(target):
         for oPath, obj in FDBase.__filteredObjectsListWithPath.items():
-            if obj == self:
+            if obj == target:
                 FDBase.__fileWithPath = oPath
                 break
+
+    def update(self):
+        FDBase.findObjectPath(self)
         FileManager.save(self, FDBase.__fileWithPath)
 
     @staticmethod
-    def delete(fileName):
-        fdbObjectFromIndexer = next(o for o in FDBModel.manager.listObjects if o.full_path == os.path.join(FDBModel.path, fileName))
+    def delete(target):
+        #string or object
+        fdbObjectFromIndexer = None
+        if type(target) is str:
+            FDBase.__fileWithPath = os.path.join(FDBModel.path, target)
+        else:
+            FDBase.findObjectPath(target)            
+        fdbObjectFromIndexer = next(o for o in FDBModel.manager.listObjects if o.full_path == FDBase.__fileWithPath)
         #Clean FDBModel.manager.listObjects
         result = FileManager.delete(fdbObjectFromIndexer.full_path)
         if result:
@@ -95,13 +107,13 @@ class FDBase(object):
     def getAllObjects():
         if not any(FDBase.__filteredObjectsListWithPath) or FDBase.__partial_seach_is_used:
             classType = FDBase.getClassType()
-            fdbObjectsFromIndexer = list(filter(lambda objectF: objectF.object_type == cls.__name__, FDBModel.manager.listObjects))
+            fdbObjectsFromIndexer = list(filter(lambda objectF: objectF.object_type == classType, FDBModel.manager.listObjects))
             FDBase.__partial_seach_is_used = False
             if fdbObjectsFromIndexer != None and any(fdbObjectsFromIndexer):
                 for lightItem in fdbObjectsFromIndexer:
                     fdbObject = FileManager.get(lightItem.full_path)
                     FDBase.__filteredObjectsListWithPath.update({lightItem.full_path:fdbObject})
-                    FDBase.__filteredObjectsList.update(fdbObject)
+                    FDBase.__filteredObjectsList.append(fdbObject)
                     FDBModel.manager.addElement(lightItem.full_path, FDBase.getClassType(), True)
 
     @staticmethod
