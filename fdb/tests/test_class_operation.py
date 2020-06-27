@@ -43,6 +43,38 @@ class Test_Class_Operation(unittest.TestCase):
         self.assertEqual(resultDelete, True)
         self.assertEqual(len(FDBModel.manager.listObjects), 0)
 
+    def test_update_class_object_no_path(self):
+        pathi = str((Path(__file__).parent).absolute())
+        FDBModel.initialize(pathi)
+        testp = Testi(5, 'toto')
+        testp.saveNew()
+
+        testp = Testi(10, 'fofo')
+        testp.saveNew()
+
+        testiObj = Testi.find(name='toto')[0]
+        self.assertIsNotNone(testiObj)
+        self.assertEqual(type(testiObj), Testi)
+        resultDelete = Testi.delete(testiObj)
+        self.assertEqual(resultDelete, True)
+        self.assertEqual(len(FDBModel.manager.listObjects), 1)
+
+        testiObj = Testi.find(name='fofo')[0]
+        self.assertIsNotNone(testiObj)
+        self.assertEqual(type(testiObj), Testi)
+        self.assertIsNotNone(testiObj)
+        self.assertEqual(testiObj.name, 'fofo')
+        testiObj.name = 'titi'
+        testiObj.update()
+
+        testiObj = Testi.find(name='titi')[0]
+        self.assertIsNotNone(testiObj)
+        self.assertEqual(len(FDBModel.manager.listObjects), 1)
+
+        resultDelete = Testi.delete(testiObj)
+        self.assertEqual(resultDelete, True)
+        self.assertEqual(len(FDBModel.manager.listObjects), 0)
+
     def test_save_two_class_object(self):
         pathi = str((Path(__file__).parent).absolute())
         FDBModel.initialize(pathi)
@@ -156,6 +188,7 @@ def suite():
     suite = unittest.TestSuite()
     suite.addTest(Test_Class_Operation('test_save_class_object'))
     suite.addTest(Test_Class_Operation('test_save_class_object_no_path'))
+    suite.addTest(Test_Class_Operation('test_update_class_object_no_path'))
     suite.addTest(Test_Class_Operation('test_save_two_class_object'))
     suite.addTest(Test_Class_Operation('test_get_objects'))
     suite.addTest(Test_Class_Operation('test_delete_object'))
