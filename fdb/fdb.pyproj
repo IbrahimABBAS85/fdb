@@ -29,6 +29,7 @@
     <Compile Include="structure\object_indexer.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="structure\__init__.py" />
     <Compile Include="tests\testi_class.py">
       <SubType>Code</SubType>
     </Compile>

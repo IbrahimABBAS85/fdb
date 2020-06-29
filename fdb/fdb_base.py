@@ -2,7 +2,7 @@ import os
 import operator
 from jpfmanager.jpf import FileManager
 from mexp.manager import find
-from model_base import FDBModel
+from fdb.model_base import FDBModel
 
 class FDBase(object):
 

@@ -1,4 +1,4 @@
-from fdb_manager import FDBManager
+from fdb.fdb_manager import FDBManager
 
 class FDBModel(object):
     path = ''
