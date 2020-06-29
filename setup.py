@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="fdb",
-    version="0.0.1",
+    name="fdbm",
+    version="0.0.3",
     author="Ibrahim Abbas",
     author_email="i.abbas85@gmail.com",
     description="File data base system used to save/update/delete/find class objects to files easly",

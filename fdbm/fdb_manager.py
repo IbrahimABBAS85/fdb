@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from mexp.manager import find
 from jpfmanager.jpf import FileManager
-from fdb.structure.object_indexer import ObjectIndexer
+from fdbm.structure.object_indexer import ObjectIndexer
 
 class FDBManager(object):
 

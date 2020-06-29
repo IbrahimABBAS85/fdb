@@ -1,4 +1,4 @@
-* FDB
+* FDBM
 * File data base system used to save/update/delete/find class objects to files easly.
 * After you create your class you can do save, update, delete and find objects of that class instance without having to write code for these opertaions.
 
@@ -8,7 +8,7 @@
 file `test_fdb.py`:
 ```
 from pathlib import Path
-from fdb.model_base import FDBModel, FDBManager
+from fdbm.model_base import FDBModel, FDBManager
 from automotive_structure import Car, Engine
 
 
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
 File `automotive_structure.py`
 ```
-from fdb.fdb_base import FDBase
+from fdbm.fdb_base import FDBase
 class Car(FDBase):
     
     def __init__(self, brand, model, year, engine):
@@ -81,4 +81,4 @@ class Engine(FDBase):
         self.origine = origine
 ```
 
-[**mexp repo**](https://github.com/IbrahimABBAS85/fdb)
+[**FDBM repo**](https://github.com/IbrahimABBAS85/fdb)
